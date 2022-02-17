@@ -19,3 +19,4 @@ Route::get('/Register', 'App\Http\Controllers\FormController@showRegistrationFor
 Route::post('/Register', 'App\Http\Controllers\FormController@processRegistration')->name('Registration.submit');
 Route::get('/login', 'App\Http\Controllers\FormController@login')->name('login');
 Route::post('/login', 'App\Http\Controllers\FormController@processLogin');
+Route::get('/users', 'App\Http\Controllers\FormController@User')->name('home');

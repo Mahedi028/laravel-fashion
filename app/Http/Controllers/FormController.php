@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Customer_tbl;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\ViewServiceProvider;
 
 
@@ -35,7 +36,7 @@ class FormController extends Controller
 
          $this->validate($request, [
              'username'=>'required',
-             'email'=>'required',
+             'email'=>'required|email|unique:Customer_tbls,email',
              'password'=>'required|min:5|max:13',
              'confirm_password'=>'required|min:5|max:13',
          ],[
@@ -89,16 +90,40 @@ class FormController extends Controller
         $credentials=$request->except(['_token']);
 
         if(auth()->guard('web')->attempt($credentials)){
-            return redirect()->route('welcome');
+            return redirect()->route('home');
 
         }
 
-        session()->flash('message', 'Invalied credentials.');
-        session()->flash('type', 'danger');
+        $this->setErrorMessage('Invalid credentials');
+
+        // session()->flash('message', 'Invalied credentials.');
+        // session()->flash('type', 'danger');
 
         return redirect()->back();
 
 
 
+    }
+    public function User()
+    {
+        // $users=Customer_tbl::all();
+        //  $users=Customer_tbl::all()->take(1);
+        //  $users=Customer_tbl::all()->skip(2)->take(1);
+        // echo $users;
+        // $users=Customer_tbl::find(3);
+        // $users=Customer_tbl::where('id', '>', '1')->get();
+        // $users=Customer_tbl::where('id', '>', '1')->count();
+        //print_r($users);
+        // $users=Customer_tbl::where('id', '2')->get();
+        $users=Customer_tbl::get();
+        // echo $users[1]->username;
+        // print_r($users);
+        // foreach($users as $user){
+        //     echo $user->username."<br>";
+        // }
+        foreach($users as $user){
+            echo $user->username."<br>";
+            echo $user->email."<br>";
+        }
     }
 }
